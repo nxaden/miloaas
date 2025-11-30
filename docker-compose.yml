@@ -1,0 +1,25 @@
+# docker-compose.yml
+
+version: "3.3"
+
+services:
+  db:
+    image: postgres:16
+    container_name: milo-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: milo
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: milo
+    ports:
+      - "5432:5432"
+    volumes:
+      - milo-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d milo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  milo-db-data:
