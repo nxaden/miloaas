@@ -1,21 +1,15 @@
 package nx.aden.miloaas.service;
 
 import nx.aden.miloaas.domain.MiloPhoto;
-import nx.aden.miloaas.repository.PhotoRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@Service
-public class PhotoService {
+public interface PhotoService {
 
-    private final PhotoRepository photoRepository;
+    List<MiloPhoto> findAll();
 
-    public PhotoService(PhotoRepository photoRepository) {
-        this.photoRepository = photoRepository;
-    }
+    Optional<MiloPhoto> findById(Long id);
 
-    public List<MiloPhoto> getAllPhotos() {
-        return photoRepository.findAll();
-    }
+    Optional<MiloPhoto> findRandom();
 }
