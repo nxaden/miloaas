@@ -1,132 +1,130 @@
 # Milo as a Service (MiloAAS)
 
-Milo as a Service (MiloAAS) is a proposed backend web API built using **Java and Spring Boot**.  
-The goal of this project is to practice building a **production-style, enterprise-inspired backend** with layered architecture, authentication, authorization, file uploads, and cloud-ready infrastructure.
+Milo as a Service (MiloAAS) is a backend web API built using **Java and Spring Boot**.  
+The goal of this project is to practice building a **production-style, enterprise-inspired backend** with layered architecture, authentication, authorization, and cloud-ready infrastructure.
 
-The core business domain is intentionally simple: serving photos of my cat Milo 🐈 — allowing the focus to remain on backend design, security, and maintainability.
+The business domain is intentionally simple — serving photos of my cat Milo 🐈 — so the focus stays on backend design, security, and maintainability.
 
 ---
 
 ## Core Features (Planned)
 
 - Retrieve random Milo photos
-- Authentication and authorization using JWT
-- Role-based access control (VIEWER, CONTRIBUTOR, ADMIN)
+- Authentication & authorization using JWT
+- Role-based access control (`VIEWER`, `CONTRIBUTOR`, `ADMIN`)
 - User-contributed Milo photos
 - Enterprise-style layered architecture
-- Structured logging and consistent error handling
+- Structured logging & consistent error handling
 
-A full breakdown of the API design can be found under **Proposed API Endpoints**.
+A detailed breakdown of the API design lives in **docs/endpoints.md**.
 
 ---
 
 ## Architecture Overview
 
-MiloAAS follows a classic **three-layer architecture**:
+MiloAAS follows a **three-layer architecture**:
 
-- **Controller layer** – REST endpoints, request/response DTOs, validation
-- **Service layer** – business logic, authorization checks, workflows
-- **Repository layer** – data access via Spring Data JPA
+- **Controller layer** – REST APIs, DTOs, validation
+- **Service layer** – business logic & authorization
+- **Repository layer** – persistence using Spring Data JPA
 
-Infrastructure dependencies include:
-- PostgreSQL for persistence
-- Object storage (e.g. S3) for image files (planned)
-
----
-
-## Getting Started (Local Development)
-
-### Prerequisites
-
-You will need the following installed:
-
-- Java 17+
-- Maven or Gradle
-- Docker (for PostgreSQL)
+Infrastructure:
+- PostgreSQL (Docker)
+- Object storage for images (planned)
 
 ---
 
-### Option 1: Start PostgreSQL with Docker (Recommended)
+## ✅ Getting Started (Recommended)
 
-Run the following command once to create and start a PostgreSQL container:
+### TL;DR
 
-```bash
-docker run --name milo-db \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=secret \
-  -e POSTGRES_DB=milo \
-  -p 5432:5432 \
-  -d postgres:16
-```
+> **The intended way to run MiloAAS is via VS Code Dev Containers.**  
+> This provides a fully reproducible development environment with Java, Maven, PostgreSQL, and debugging tools preconfigured.
 
-What this does:
-- Creates a PostgreSQL database named milo
-- Exposes it on localhost:5432
-- Persists data inside the container
+No local Java, Maven, or PostgreSQL installation is required.
 
-To manage the database later:
+---
 
-```bash
-docker start milo-db
-docker stop milo-db
-docker logs milo-db
-```
+## Prerequisites
 
-### Option 2: Start PostgreSQL with Docker Compose
+You need:
+- **Docker Desktop**
+- **VS Code**
+- VS Code extension: **Dev Containers**
 
-Alternatively, you can start PostgreSQL using Docker Compose:
+That’s it.
+
+---
+
+## Running the App (Dev Containers + Docker Compose)
+
+### 1. Clone the repository
 
 ```bash
-docker compose up -d
+git clone https://github.com/your-username/miloaas.git
+cd miloaas
 ```
 
-This will start PostgreSQL on localhost:5432 using the configuration defined in docker-compose.yml.
+### 2. Open in Dev Container
 
-### Application Configuration
+In VS Code:
 
-The application is configured by default to connect to the local PostgreSQL instance.
-
-`src/main/resources/application.yml`:
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/milo
-    username: postgres
-    password: secret
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+```
+Cmd/Ctrl + Shift + P → Dev Containers: Reopen in Container
 ```
 
-If you change database credentials, be sure to update both Docker and this configuration.
+What happens automatically:
 
-### Run the Application 
+The Dev Container is built (Java, Maven, CLI tools)
 
-From the project root:
+PostgreSQL is started via docker compose
+
+Both services are attached to the same Docker network
+
+No manual Docker commands required.
+
+### 3. Start the Spring Boot application
+
+Inside the Dev Container terminal:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-Once started, the API will be available at:
+### 4. Access the API
 
+- API base URL: http://localhost:8080
+
+- PostgreSQL: internal Docker network (milo-db:5432)
+
+Example health check:
+
+```bash
+curl http://localhost:8080/actuator/health
 ```
-http://localhost:8080
+
+## Database Config
+
+The application connects to PostgreSQL running as a Docker service.
+
+Spring configuration (simplified): 
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:postgresql://milo-db:5432/milo
+    username: milo
+    password: secret
 ```
 
-### Development Status
+> The hostname is milo-db, not localhost.
 
-This project is under active development. At the moment:
+## Dev Container Tooling 
 
-- ✅ Core domain and read-only endpoints are being built
+The Dev Container includes debugging tools used during development:
 
-- ⏳ Authentication and authorization are planned next
+- psql – connect to PostgreSQL directly
+- netcat (nc) – test network connectivity
+- curl – test API endpoints
 
-- ⏳ File uploads and object storage integration are planned
-
-- ⏳ Metrics, monitoring, and red teaming are planned future work
-
-Detailed design decisions and architecture rationale can be found in the project documentation.
+These tools are intentionally kept in the container for future debugging and observability.

@@ -1,22 +1,13 @@
 {
   "name": "MiloAAS Dev",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
-  },
-
+  "dockerComposeFile": [
+    "../docker-compose.yml"
+  ],
+  "service": "app",
   "workspaceFolder": "/workspace",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
 
   "forwardPorts": [8080, 5432],
-
-  "runArgs": [
-    "--network=milo-net"
-  ],
-
-  "mounts": [
-    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
-  ],
+  "shutdownAction": "none",
 
   "customizations": {
     "vscode": {
@@ -34,7 +25,6 @@
       ]
     }
   },
-
   "postCreateCommand": "chmod +x mvnw || true",
   "remoteUser": "vscode"
 }

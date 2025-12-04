@@ -1,8 +1,18 @@
-# docker-compose.yml
-
-version: "3.3"
+version: "3.8"
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    container_name: milo-app
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: sleep infinity      # keep container alive for VS Code
+    networks:
+      - milo-net
+
   db:
     image: postgres:16
     container_name: milo-db
@@ -15,11 +25,16 @@ services:
       - "5432:5432"
     volumes:
       - milo-db-data:/var/lib/postgresql/data
+    networks:
+      - milo-net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d milo"]
+      test: ["CMD-SHELL", "pg_isready -U milo -d milo"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+networks:
+  milo-net: {}
 
 volumes:
   milo-db-data:
