@@ -1,5 +1,7 @@
 # Milo as a Service (MiloAAS)
 
+![alt text](docs/assets/image.png)
+
 Milo as a Service (MiloAAS) is a backend web API built using **Java and Spring Boot**.  
 The goal of this project is to practice building a **production-style, enterprise-inspired backend** with layered architecture, authentication, authorization, and cloud-ready infrastructure.
 
@@ -28,7 +30,7 @@ Infrastructure:
 - PostgreSQL (Docker)
 - Object storage for images (planned)
 
-## ✅ Getting Started (Recommended)
+## Getting Started
 
 ### TL;DR
 
