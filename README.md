@@ -5,8 +5,6 @@ The goal of this project is to practice building a **production-style, enterpris
 
 The business domain is intentionally simple — serving photos of my cat Milo 🐈 — so the focus stays on backend design, security, and maintainability.
 
----
-
 ## Core Features (Planned)
 
 - Retrieve random Milo photos
@@ -17,8 +15,6 @@ The business domain is intentionally simple — serving photos of my cat Milo �
 - Structured logging & consistent error handling
 
 A detailed breakdown of the API design lives in **docs/endpoints.md**.
-
----
 
 ## Architecture Overview
 
@@ -32,8 +28,6 @@ Infrastructure:
 - PostgreSQL (Docker)
 - Object storage for images (planned)
 
----
-
 ## ✅ Getting Started (Recommended)
 
 ### TL;DR
@@ -42,8 +36,6 @@ Infrastructure:
 > This provides a fully reproducible development environment with Java, Maven, PostgreSQL, and debugging tools preconfigured.
 
 No local Java, Maven, or PostgreSQL installation is required.
-
----
 
 ## Prerequisites
 
@@ -75,13 +67,13 @@ Cmd/Ctrl + Shift + P → Dev Containers: Reopen in Container
 
 What happens automatically:
 
-The Dev Container is built (Java, Maven, CLI tools)
+- The Dev Container is built (Java, Maven, CLI tools)
 
-PostgreSQL is started via docker compose
+- PostgreSQL is started via docker compose
 
-Both services are attached to the same Docker network
+- Both services are attached to the same Docker network
 
-No manual Docker commands required.
+- No manual Docker commands required.
 
 ### 3. Start the Spring Boot application
 
